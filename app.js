@@ -1,17 +1,15 @@
-const URL = "https://kompege.ru/lk"
+
 const mo = new MutationObserver(onMutation);
-var hasScore = false
-observe();
+mo.observe(document, {
+        subtree: true,
+        childList: true,
+    });
 
 function onMutation() {
     const [wrap] = document.getElementsByClassName("table-wrap");
-    console.log("mutation", hasScore)
+    let hasScore = false
 
-    if (location.href !== URL) {
-        hasScore = false
-    }
-
-    if (wrap && wrap.hasAttribute("data-v-2f22da39") && wrap.hasAttribute("data-v-e9e39a72") && !hasScore) {
+    if (wrap && wrap.hasAttribute("data-v-2f22da39") && wrap.hasAttribute("data-v-e9e39a72") && countCounters() === 0) {
         mo.disconnect();
 
         setTimeout(function () {
@@ -43,9 +41,15 @@ function onMutation() {
     }
 }
 
-function observe() {
-    mo.observe(document, {
-        subtree: true,
-        childList: true,
-    });
+function countCounters() {
+    const [w1] = document.getElementsByClassName("table-wrap");
+    if (w1.hasAttribute("data-v-2f22da39") && w1.hasAttribute("data-v-e9e39a72")) {
+        let k = 0
+        const w2 = w1.firstChild
+        for (const c of w2.children) {
+            if (c.tagName === "P") k += 1
+        }
+        return k - 1
+    }
+    return 0
 }
