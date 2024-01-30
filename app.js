@@ -1,16 +1,18 @@
-const [tableWrap] = document.getElementsByClassName("table-wrap");
-kims = tableWrap.children.item(0)
-
+const URL = "https://kompege.ru/lk"
 const mo = new MutationObserver(onMutation);
-observe();
 var hasScore = false
+observe();
 
 function onMutation() {
     const [wrap] = document.getElementsByClassName("table-wrap");
     console.log("mutation", hasScore)
 
+    if (location.href !== URL) {
+        hasScore = false
+    }
+
     if (wrap && wrap.hasAttribute("data-v-2f22da39") && wrap.hasAttribute("data-v-e9e39a72") && !hasScore) {
-        disconnect()
+        mo.disconnect();
 
         setTimeout(function () {
             const [wrap] = document.getElementsByClassName("table-wrap");
@@ -31,7 +33,10 @@ function onMutation() {
             totalScore.innerText = `Всего баллов: ${total}`
             hasScore = true
             anotherWrap.prepend(totalScore)
-            observe();
+            mo.observe(document, {
+                subtree: true,
+                childList: true,
+            });
         }, 300)
 
 
@@ -44,12 +49,3 @@ function observe() {
         childList: true,
     });
 }
-
-function disconnect() {
-    mo.disconnect();
-}
-
-
-const totalScore = document.createElement("p")
-totalScore.innerText = "Всего баллов: -"
-kims.prepend(totalScore)
