@@ -3,4 +3,4 @@
 <br/>
 ![image](https://github.com/JmihPajiloy/kompege-extension/assets/88596944/57a90e60-fdd4-4202-9f99-6718fad405ff)
 <br/>
-(только для хрома)
+(не только для хрома)
