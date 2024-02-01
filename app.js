@@ -8,18 +8,14 @@ mo.observe(document, {
 function onMutation() {
     const [wrap] = document.getElementsByClassName("table-wrap");
     let hasScore = false
-
     if (wrap && wrap.hasAttribute("data-v-2f22da39") && wrap.hasAttribute("data-v-e9e39a72") && countCounters() === 0) {
         mo.disconnect();
-
-        setTimeout(function () {
+        let id = setInterval(function () {
             const [wrap] = document.getElementsByClassName("table-wrap");
             const anotherWrap = wrap.children.item(0)
             let total = 0;
-
             for (const elem of anotherWrap.children) {
                 if (elem.tagName !== "DIV") continue
-                // console.log(elem.tagName)
                 let score = elem
                     .getElementsByClassName("kim-table")
                     .item(0)
@@ -28,16 +24,18 @@ function onMutation() {
                 total += parseInt(score)
             }
             const totalScore = document.createElement("p")
+            if (total === 0) {
+                return;
+            }
             totalScore.innerText = `Всего баллов: ${total}`
             hasScore = true
             anotherWrap.prepend(totalScore)
+            clearInterval(id)
             mo.observe(document, {
                 subtree: true,
                 childList: true,
             });
-        }, 300)
-
-
+        }, 10)
     }
 }
 
